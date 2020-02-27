@@ -1,0 +1,11 @@
+[0;1;32m●[0m mysql.service - MySQL Community Server
+   Loaded: loaded (/lib/systemd/system/mysql.service; enabled; vendor preset: enabled)
+   Active: [0;1;32mactive (running)[0m since Sex 2020-02-21 10:42:57 -03; 42min ago
+  Process: 972 ExecStartPost=/usr/share/mysql/mysql-systemd-start post (code=exited, status=0/SUCCESS)
+  Process: 960 ExecStartPre=/usr/share/mysql/mysql-systemd-start pre (code=exited, status=0/SUCCESS)
+ Main PID: 971 (mysqld)
+   CGroup: /system.slice/mysql.service
+           └─971 /usr/sbin/mysqld
+
+Fev 21 10:42:52 Estudio-Vai-na-Web-05 systemd[1]: Starting MySQL Community Server...
+Fev 21 10:42:57 Estudio-Vai-na-Web-05 systemd[1]: Started MySQL Community Server.
