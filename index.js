@@ -1,26 +1,43 @@
 const express = require('express');
 const app = express();
-const handlebars = require('express-handlebars')
+const handlebars = require('express-handlebars');
+const bodyParser = require('body-parser');
+const Post = require('./models/Post');
 
 
 // Config
-  //  template engine
+  // template engine
   app.engine('handlebars', handlebars({defaultLayout: 'main'}))
   app.set('view engine', 'handlebars')
 
-  // conection database
-  const Sequelize = require('sequelize');
-  const sequelize = new Sequelize('test', 'root', 'Cassio@123456', {
-    host: 'localhost',
-    dialect: 'mysql'
-  });
+  // body parser
+  app.use(bodyParser.urlencoded({extended:false}))
+  app.use(bodyParser.json())
 
-// Rotas  
+// Routes
+  app.get('/', function(req, res) {
+    Post.findAll().then(function(posts){
+      // console.log(posts)
+      res.render('home', {posts: posts})
+    })
+  })
+
   app.get('/cad', function(req, res){
     res.render('formulario')
   })
+  
   app.post('/add', function(req, res){
-    res.send('formulário recebido')
+    const tituloReq = req.body.titulo
+    const conteudoReq = req.body.conteudo
+    
+    Post.create({
+      titulo: tituloReq,
+      conteudo: conteudoReq
+    }).then(function(){
+      res.redirect('/')
+    }).catch(function(erro){
+      res.send('Error creating post ' + erro)
+    })
   })
 
 app.listen(3000, function(){
