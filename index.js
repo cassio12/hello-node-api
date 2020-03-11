@@ -15,10 +15,10 @@ const Post = require('./models/Post');
   app.use(bodyParser.json())
 
 // Routes
-  app.get('/', function(req, res) {
+  app.get('/showPosts', function(req, res) {
     Post.findAll().then(function(posts){
-      console.log(posts)
       res.render('home', {posts: posts})
+      // console.log(posts)
     })
   })
 
@@ -34,7 +34,7 @@ const Post = require('./models/Post');
       titulo: tituloReq,
       conteudo: conteudoReq
     }).then(function(){
-      res.redirect('/')
+      res.redirect('/showPosts')
     }).catch(function(erro){
       res.send('Error creating post ' + erro)
     })
