@@ -15,18 +15,17 @@ const Post = require('./models/Post');
   app.use(bodyParser.json())
 
 // Routes
-  app.get('/showPosts', function(req, res) {
-    Post.findAll().then(function(posts){
+  app.get('/', function(req, res) {
+    Post.findAll({order: [['id', 'desc']]}).then(function(posts){
       res.render('home', {posts: posts})
-      // console.log(posts)
     })
   })
 
-  app.get('/cad', function(req, res){
+  app.get('/add', function(req, res){
     res.render('formulario')
   })
   
-  app.post('/add', function(req, res){
+  app.post('/post', function(req, res){
     const tituloReq = req.body.titulo
     const conteudoReq = req.body.conteudo
     
@@ -34,9 +33,35 @@ const Post = require('./models/Post');
       titulo: tituloReq,
       conteudo: conteudoReq
     }).then(function(){
-      res.redirect('/showPosts')
+      res.redirect('/')
     }).catch(function(erro){
       res.send('Error creating post ' + erro)
+    })
+  })
+
+  app.get('/atualizar/:id', function(req, res){
+    res.render('formUpdate', {id: req.params.id})
+  })
+  
+  app.post('/newPost/:id', function(req, res){
+    const idReq = req.params.id;
+    const tituloReq = req.body.titulo;
+    const conteudoReq = req.body.conteudo;
+    Post.update({
+      titulo: tituloReq,
+      conteudo: conteudoReq,
+    },{where: {'id': idReq}}).then(function(){
+      res.redirect('/')
+    }).catch(function(erro){
+      res.send('Error ao atualizar o post ' + erro)
+    })
+  })
+
+  app.get('/deletar/:id', function(req, res){
+    Post.destroy({where: {'id': req.params.id}}).then(function(posts){
+      res.render('deletar', {posts: posts})
+    }).catch(function(error){
+      res.send('Ocorreu algum erro ao deletar a postagem', error)
     })
   })
 
